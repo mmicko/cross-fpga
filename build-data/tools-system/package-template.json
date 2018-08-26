@@ -1,0 +1,7 @@
+{
+  "name":"tools-system",
+  "description":"System tools",
+  "url":"https://github.com/FPGAwars/tools-system/releases",
+  "version": %VERSION%,
+  "system": [ %SYSTEM% ]
+}

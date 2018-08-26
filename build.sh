@@ -8,9 +8,8 @@ TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 win
 J=$(($(nproc)-1))
 
 # -- Debug flags
-COMPILE_YOSYS=0
-COMPILE_ICOTOOLS=0
-CREATE_PACKAGE=1
+BUILD_SYSTEM=1
+BUILD_YOSYS=0
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -68,23 +67,29 @@ echo ""
 echo ">>> ARCHITECTURE \"$ARCH\""
 if [ $ARCH == "linux_x86_64" ]; then
   CROSS=$WORK_DIR/docker/bin/cross-linux-x64
+  CROSS_PREFIX=/opt/x86_64-linux-gnu
 fi
 if [ $ARCH == "linux_i686" ]; then
   CROSS=$WORK_DIR/docker/bin/cross-linux-x86
+  CROSS_PREFIX=/opt/i686-linux-gnu
 fi
 if [ $ARCH == "linux_armv7l" ]; then
   CROSS=$WORK_DIR/docker/bin/cross-linux-arm
+  CROSS_PREFIX=/opt/arm-linux-gnueabihf
 fi
 if [ $ARCH == "linux_aarch64" ]; then
   CROSS=$WORK_DIR/docker/bin/cross-linux-arm64
+  CROSS_PREFIX=/opt/aarch64-linux-gnu
 fi
 if [ $ARCH == "windows_x86" ]; then
   EXE=".exe"
   CROSS=$WORK_DIR/docker/bin/cross-windows-x86
+  CROSS_PREFIX=/opt/i686-w64-mingw32
 fi
 if [ $ARCH == "windows_amd64" ]; then
   EXE=".exe"
   CROSS=$WORK_DIR/docker/bin/cross-windows-x64
+  CROSS_PREFIX=/opt/x86_64-w64-mingw32
 fi
 
 # -- Directory for compiling the tools
@@ -96,8 +101,28 @@ PACKAGE_DIR=$PACKAGES_DIR/build_$ARCH
 # -- Create the build dir
 mkdir -p $BUILD_DIR
 
-# --------- Compile yosys ------------------------------------------
-if [ $COMPILE_YOSYS == "1" ]; then
+# --------- Build system ------------------------------------------
+if [ $BUILD_SYSTEM == "1" ]; then
+  print ">> Compile system"
+  # -- Toolchain name
+  NAME=tools-system
+  VERSION=1.2.0
+  # -- Create the package folders
+  mkdir -p $PACKAGE_DIR/$NAME/bin
+
+  cd $PACKAGE_DIR/$NAME/bin
+  $CROSS cp $CROSS_PREFIX/bin/lsusb lsusb$EXE
+  $CROSS cp $CROSS_PREFIX/bin/lsftdi lsftdi$EXE
+  test_bin lsusb$EXE
+  test_bin lsftdi$EXE  
+  cd $WORK_DIR
+
+  print ">> Create system package"
+  . $WORK_DIR/scripts/create_package.sh
+fi
+
+# --------- Build yosys ------------------------------------------
+if [ $BUILD_YOSYS == "1" ]; then
   print ">> Compile yosys"
   # -- Toolchain name
   NAME=toolchain-yosys
