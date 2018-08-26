@@ -1,0 +1,7 @@
+{
+  "name":"toolchain-yosys",
+  "description":"Yosys toolchain",
+  "url":"https://github.com/FPGAwars/toolchain-yosys/releases",
+  "version": %VERSION%,
+  "system": [ %SYSTEM% ]
+}

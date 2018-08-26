@@ -1,0 +1,1 @@
+docker run --user `id -u`:`id -g` --rm -v $(pwd):/work mmicko/cross-windows-x64:1.0 "$@"
