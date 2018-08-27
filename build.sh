@@ -9,7 +9,7 @@ J=$(($(nproc)-1))
 
 # -- Debug flags
 BUILD_SYSTEM=1
-BUILD_YOSYS=0
+BUILD_YOSYS=1
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -90,6 +90,10 @@ if [ $ARCH == "windows_amd64" ]; then
   EXE=".exe"
   CROSS=$WORK_DIR/docker/bin/cross-windows-x64
   CROSS_PREFIX=/opt/x86_64-w64-mingw32
+fi
+if [ $ARCH == "darwin" ]; then
+  CROSS=$WORK_DIR/docker/bin/cross-darwin-x64
+  CROSS_PREFIX=/opt/x86_64-apple-darwin15
 fi
 
 # -- Directory for compiling the tools
