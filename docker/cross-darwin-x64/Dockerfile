@@ -18,7 +18,7 @@ RUN cd / && curl -L https://github.com/tpoechtrager/osxcross/archive/master.tar.
     cd /osxcross-master/ && \
     curl -L -o tarballs/MacOSX${MAC_SDK_VERSION}.sdk.tar.xz https://s3.dockerproject.org/darwin/v2/MacOSX10.11.sdk.tar.xz && \
     echo | SDK_VERSION=${MAC_SDK_VERSION} OSX_VERSION_MIN=10.6 ./build.sh && \
-    GCC_VERSION=6.2.0 ./build_gcc.sh
+    GCC_VERSION=7.3.0 ./build_gcc.sh
     
 ENV AS=/osxcross-master/target/bin/${CROSS_NAME}-as \
     AR=/osxcross-master/target/bin/${CROSS_NAME}-ar \
@@ -33,7 +33,11 @@ COPY Toolchain.cmake ${CROSS_PREFIX}/
 
 ENV CMAKE_TOOLCHAIN_FILE ${CROSS_PREFIX}/Toolchain.cmake
 
-RUN cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
+RUN cd /src/boost && \
+    echo "using gcc : : " ${CC} "; " >> tools/build/src/user-config.jam && \
+    ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread && \
+    ./b2 --toolset=gcc --target-os=darwin link=static install && \
+    cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
     make -j9 && \
     make install && \
     cd /src/libftdi1 && \
