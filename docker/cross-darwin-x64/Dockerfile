@@ -10,9 +10,8 @@ RUN apt-get -y install clang-3.9 llvm-3.9 automake autogen \
     apt-get clean --yes && \
     update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.9 100 \
         --slave /usr/bin/clang++ clang++ /usr/bin/clang++-3.9
-ENV MAC_SDK_VERSION 10.11
 
-#  https://www.dropbox.com/s/yfbesd249w10lpc/MacOSX${MAC_SDK_VERSION}.sdk.tar.xz
+ENV MAC_SDK_VERSION 10.11
 
 RUN cd / && curl -L https://github.com/tpoechtrager/osxcross/archive/master.tar.gz | tar xvz && \
     cd /osxcross-master/ && \
@@ -46,10 +45,10 @@ RUN cd /src/boost && \
     make -j9 && \
     cmake -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake -P cmake_install.cmake  && \
     cd /src/libftdi1/examples && \
-    ${CC} -o lsftdi find_all.c -Bstatic -lftdi1 -lusb-1.0 -lpthread -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include/libftdi1 && \
+    ${CC} -o lsftdi find_all.c -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include/libftdi1 -Bstatic /opt/x86_64-apple-darwin15/lib/libftdi1.a /opt/x86_64-apple-darwin15/lib/libusb-1.0.a -Wl,-framework,IOKit -Wl,-framework,CoreFoundation -lobjc -lpthread  && \
     cp lsftdi ${CROSS_PREFIX}/bin/. && \
     cd /src/libusb/examples && \
-    ${CC} -o lsusb listdevs.c -Bstatic -lusb-1.0 -lpthread -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include/libusb-1.0 && \
+    ${CC} -o lsusb listdevs.c -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include/libusb-1.0 -Bstatic /opt/x86_64-apple-darwin15/lib/libusb-1.0.a -Wl,-framework,IOKit -Wl,-framework,CoreFoundation -lobjc -lpthread && \
     cp lsusb ${CROSS_PREFIX}/bin/. && \
     cd / && \
     rm -rf /src 
