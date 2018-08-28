@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=2018-08
+DATE_VERSION=2018-08
 
 # -- Target architectures
 ARCH=$1
@@ -130,6 +130,7 @@ if [ $BUILD_YOSYS == "1" ]; then
   print ">> Compile yosys"
   # -- Toolchain name
   NAME=toolchain-yosys
+  VERSION=$DATE_VERSION
   # -- Create the package folders
   mkdir -p $PACKAGE_DIR/$NAME/bin
   mkdir -p $PACKAGE_DIR/$NAME/share
