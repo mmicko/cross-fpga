@@ -1,7 +1,7 @@
 # -- Compile Arachne PnR script
 
 ARACHNE=arachne-pnr
-GIT_ARACHNE=https://github.com/cseed/arachne-pnr.git
+GIT_ARACHNE=https://github.com/YosysHQ/arachne-pnr
 
 cd $UPSTREAM_DIR
 
@@ -20,7 +20,6 @@ cd $BUILD_DIR/
 if [ $ARCH == "darwin" ]; then
   $CROSS make -C $ARACHNE -j$J LIBS="-lm" ICEBOX="../icestorm/icebox" HOST_CC=gcc HOST_CXX=g++
 else
-  #sed -i "s/bin\/arachne-pnr\ -d\ /\\/bin\/arachne-pnr\ -d\ /;" $ARACHNE/Makefile
   $CROSS make -C $ARACHNE -j$J LIBS="-static -static-libstdc++ -static-libgcc -lm" ICEBOX="../icestorm/icebox" HOST_CC=gcc HOST_CXX=g++
 fi
 

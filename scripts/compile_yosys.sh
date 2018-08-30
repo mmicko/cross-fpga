@@ -1,7 +1,7 @@
 # -- Compile Yosys script
 
 YOSYS=yosys
-GIT_YOSYS=https://github.com/cliffordwolf/yosys.git
+GIT_YOSYS=https://github.com/YosysHQ/yosys
 
 cd $UPSTREAM_DIR
 # -- Clone the sources from github
