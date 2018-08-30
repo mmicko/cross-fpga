@@ -47,3 +47,4 @@ done
 # -- Copy the chipdb*.txt data files
 mkdir -p $PACKAGE_DIR/$NAME/share/icebox
 cp -r icebox/chipdb*.txt $PACKAGE_DIR/$NAME/share/icebox
+cp -r icefuzz/timings_*.txt $PACKAGE_DIR/$NAME/share/icebox
