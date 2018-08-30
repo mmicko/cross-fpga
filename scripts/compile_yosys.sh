@@ -7,6 +7,8 @@ cd $UPSTREAM_DIR
 # -- Clone the sources from github
 test -e $YOSYS || git clone --depth=1 $GIT_YOSYS $YOSYS
 git -C $YOSYS pull
+echo ""
+git -C $YOSYS log -1
 
 # -- Copy the upstream sources into the build directory
 rsync -a $YOSYS $BUILD_DIR --exclude .git

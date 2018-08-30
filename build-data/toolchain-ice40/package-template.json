@@ -1,0 +1,7 @@
+{
+  "name":"toolchain-ice40",
+  "description":"ICE40 toolchain",
+  "url":"https://github.com/FPGAwars/toolchain-ice40/releases",
+  "version": %VERSION%,
+  "system": [ %SYSTEM% ]
+}
