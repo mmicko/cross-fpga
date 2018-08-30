@@ -66,6 +66,7 @@ fi
 
 echo ""
 echo ">>> ARCHITECTURE \"$ARCH\""
+CROSS_HOST=$WORK_DIR/docker/bin/cross-linux-x64
 if [ $ARCH == "linux_x86_64" ]; then
   CROSS=$WORK_DIR/docker/bin/cross-linux-x64
   CROSS_PREFIX=/opt/x86_64-linux-gnu
@@ -155,6 +156,8 @@ if [ $BUILD_ICE40 == "1" ]; then
   . $WORK_DIR/scripts/compile_icestorm.sh
 
   . $WORK_DIR/scripts/compile_arachnepnr.sh
+
+  . $WORK_DIR/scripts/compile_nextpnr_ice40.sh
 
   print ">> Create ice40 package"
   . $WORK_DIR/scripts/create_package.sh
