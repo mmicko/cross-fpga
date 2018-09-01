@@ -4,9 +4,6 @@ ENV CROSS_NAME x86_64-linux-gnu
 
 ENV CROSS_PREFIX /opt/${CROSS_NAME}
 
-RUN apt-get -y install build-essential && \
-    apt-get clean --yes
-
 ENV AS=/usr/bin/${CROSS_NAME}-as \
     AR=/usr/bin/${CROSS_NAME}-ar \
     CC=/usr/bin/${CROSS_NAME}-gcc \
@@ -26,7 +23,7 @@ RUN cd /src/boost && \
     make install && \
     cd /src/libftdi1 && \
     export PKG_CONFIG_PATH=${CROSS_PREFIX}/lib/pkgconfig && \
-    cmake . -DCMAKE_INSTALL_PREFIX=${CROSS_PREFIX} && \
+    cmake . -DCMAKE_INSTALL_PREFIX=${CROSS_PREFIX} -DBOOST_ROOT=$CROSS_PREFIX && \
     make -j9 && \
     make install && \
     cd /src/libftdi1/examples && \

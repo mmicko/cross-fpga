@@ -27,7 +27,7 @@ RUN cd /src/boost && \
     make install && \
     cd /src/libftdi1 && \
     export PKG_CONFIG_PATH=${CROSS_PREFIX}/lib/pkgconfig && \
-    cmake . -DCMAKE_INSTALL_PREFIX=${CROSS_PREFIX} -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake  && \
+    cmake . -DCMAKE_INSTALL_PREFIX=${CROSS_PREFIX} -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX  && \
     make -j9 && \
     make install && \
     cd /src/libftdi1/examples && \
