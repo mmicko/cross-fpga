@@ -12,6 +12,7 @@ echo ""
 git -C $PRJTRELLIS log -1
 
 # -- Copy the upstream sources into the build directory
+rm -rf $BUILD_DIR/$PRJTRELLIS
 rsync -a $PRJTRELLIS $BUILD_DIR --exclude .git
 
 cd $BUILD_DIR/$PRJTRELLIS
