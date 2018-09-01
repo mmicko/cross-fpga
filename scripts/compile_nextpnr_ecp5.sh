@@ -18,18 +18,19 @@ cd $BUILD_DIR/
 
 $CROSS_HOST /bin/sh -c 'rm -rf BUILD_BBA && mkdir BUILD_BBA && cd BUILD_BBA && cmake ../nextpnr -DARCH=generic -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DBOOST_ROOT=$CROSS_PREFIX && make bbasm'
 
-# -- Copy the chipdb*.txt data files
-rm -rf BUILD_ICE40
-mkdir -p BUILD_ICE40/icebox
-cp -r icestorm/icebox/chipdb*.txt BUILD_ICE40/icebox
-cp -r icestorm/icefuzz/timings_*.txt BUILD_ICE40/icebox
+cd $BUILD_DIR/prjtrellis
+./download-latest-db.sh
+cd $BUILD_DIR
 
-$CROSS /bin/sh -c 'cd BUILD_ICE40 && cmake ../nextpnr -DARCH=ice40 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DICEBOX_ROOT=/work/BUILD_ICE40/icebox -DIMPORT_EXECUTABLES=../BUILD_BBA/ImportExecutables.cmake'
+rm -rf BUILD_ECP5
+mkdir -p BUILD_ECP5
 
-$CROSS make -C BUILD_ICE40 -j$J
+$CROSS /bin/sh -c 'cd BUILD_ECP5 && cmake ../nextpnr -DARCH=ecp5 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DTRELLIS_ROOT=/work/prjtrellis -DIMPORT_EXECUTABLES=../BUILD_BBA/ImportExecutables.cmake'
+
+$CROSS make -C BUILD_ECP5 -j$J
 
 # -- Test the generated executables
-test_bin BUILD_ICE40/nextpnr-ice40$EXE
+test_bin BUILD_ECP5/nextpnr-ecp5$EXE
 
 # -- Copy the executable to the bin dir
-cp BUILD_ICE40/nextpnr-ice40$EXE $PACKAGE_DIR/$NAME/bin/nextpnr-ice40$EXE
+cp BUILD_ECP5/nextpnr-ecp5$EXE $PACKAGE_DIR/$NAME/bin/nextpnr-ecp5$EXE

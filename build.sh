@@ -10,7 +10,8 @@ J=$(($(nproc)-1))
 # -- Debug flags
 BUILD_SYSTEM=0
 BUILD_YOSYS=0
-BUILD_ICE40=1
+BUILD_ICE40=0
+BUILD_ECP5=1
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -160,5 +161,23 @@ if [ $BUILD_ICE40 == "1" ]; then
   . $WORK_DIR/scripts/compile_nextpnr_ice40.sh
 
   print ">> Create ice40 package"
+  . $WORK_DIR/scripts/create_package.sh
+fi
+
+# --------- Build ecp5 ------------------------------------------
+if [ $BUILD_ECP5 == "1" ]; then
+  print ">> Compile ecp5"
+  # -- Toolchain ecp5
+  NAME=toolchain-ecp5
+  VERSION=$DATE_VERSION
+  # -- Create the package folders
+  mkdir -p $PACKAGE_DIR/$NAME/bin
+  mkdir -p $PACKAGE_DIR/$NAME/share
+
+  . $WORK_DIR/scripts/compile_prjtrellis.sh
+
+  . $WORK_DIR/scripts/compile_nextpnr_ecp5.sh
+
+  print ">> Create ecp5 package"
   . $WORK_DIR/scripts/create_package.sh
 fi

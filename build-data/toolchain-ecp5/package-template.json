@@ -1,0 +1,7 @@
+{
+  "name":"toolchain-ecp5",
+  "description":"ECP5 toolchain",
+  "url":"https://github.com/FPGAwars/toolchain-ecp5/releases",
+  "version": %VERSION%,
+  "system": [ %SYSTEM% ]
+}
