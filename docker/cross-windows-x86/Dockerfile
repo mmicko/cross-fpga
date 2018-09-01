@@ -38,3 +38,8 @@ RUN cd /src/boost && \
     cp lsusb ${CROSS_PREFIX}/bin/. && \
     cd / && \
     rm -rf /src 
+
+RUN cp ${CROSS_PREFIX}/lib/libboost_thread_win32.a ${CROSS_PREFIX}/lib/libboost_thread.a
+
+RUN echo "1"| update-alternatives --config i686-w64-mingw32-gcc
+RUN echo "1"| update-alternatives --config i686-w64-mingw32-g++
