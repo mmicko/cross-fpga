@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATE_VERSION=2018-08
+DATE_VERSION=2018.8.0
 
 # -- Target architectures
 ARCH=$1

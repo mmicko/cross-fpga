@@ -40,3 +40,4 @@ cp $PRJTRELLIS/libtrellis/ecpunpack$EXE $PACKAGE_DIR/$NAME/bin/ecpunpack$EXE
 # -- Copy the chipdb*.bin data files
 mkdir -p $PACKAGE_DIR/$NAME/share/trellis
 rsync -a $PRJTRELLIS/database $PACKAGE_DIR/$NAME/share/trellis --exclude .git
+rsync -a $PRJTRELLIS/misc/basecfgs $PACKAGE_DIR/$NAME/share/trellis --exclude README.md
