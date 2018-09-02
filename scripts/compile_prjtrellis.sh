@@ -36,6 +36,7 @@ test_bin $PRJTRELLIS/libtrellis/ecpunpack$EXE
 # -- Copy the executable to the bin dir
 cp $PRJTRELLIS/libtrellis/ecppack$EXE $PACKAGE_DIR/$NAME/bin/ecppack$EXE
 cp $PRJTRELLIS/libtrellis/ecpunpack$EXE $PACKAGE_DIR/$NAME/bin/ecpunpack$EXE
+cp $PRJTRELLIS/tools/bit_to_svf.py $PACKAGE_DIR/$NAME/bin/bit_to_svf.py
 
 # -- Copy the chipdb*.bin data files
 mkdir -p $PACKAGE_DIR/$NAME/share/trellis
