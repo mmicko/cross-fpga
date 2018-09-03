@@ -4,7 +4,7 @@ ENV CROSS_NAME x86_64-apple-darwin15
 
 ENV CROSS_PREFIX /opt/${CROSS_NAME}
 
-RUN apt-get -y install clang-3.9 llvm-3.9 automake autogen \
+RUN apt-get -y install clang llvm clang-3.9 llvm-3.9 automake autogen \
                 libtool libxml2-dev uuid-dev libssl-dev bash \
                 patch make tar xz-utils bzip2 gzip sed cpio curl zlib1g-dev libmpc-dev libmpfr-dev libgmp-dev && \
     apt-get clean --yes && \
@@ -16,7 +16,7 @@ ENV MAC_SDK_VERSION 10.11
 RUN cd / && curl -L https://github.com/tpoechtrager/osxcross/archive/master.tar.gz | tar xvz && \
     cd /osxcross-master/ && \
     curl -L -o tarballs/MacOSX${MAC_SDK_VERSION}.sdk.tar.xz https://s3.dockerproject.org/darwin/v2/MacOSX10.11.sdk.tar.xz && \
-    echo | SDK_VERSION=${MAC_SDK_VERSION} OSX_VERSION_MIN=10.6 ./build.sh && \
+    echo | SDK_VERSION=${MAC_SDK_VERSION} OSX_VERSION_MIN=10.6 PORTABLE=true ./build.sh && ./build_compiler_rt.sh  && \
     GCC_VERSION=7.3.0 ./build_gcc.sh
     
 ENV AS=/osxcross-master/target/bin/${CROSS_NAME}-as \
@@ -33,9 +33,9 @@ COPY Toolchain.cmake ${CROSS_PREFIX}/
 ENV CMAKE_TOOLCHAIN_FILE ${CROSS_PREFIX}/Toolchain.cmake
 
 RUN cd /src/boost && \
-    echo "using gcc : : " ${CC} "; " >> tools/build/src/user-config.jam && \
-    ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread && \
-    ./b2 --toolset=gcc --target-os=darwin link=static install && \
+    echo "using gcc : : " /osxcross-master/target/bin/${CROSS_NAME}-g++ " : <linker-type>\"darwin\" <archiver>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ar\" <ranlib>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ranlib\" ; " >> tools/build/src/user-config.jam && \
+    ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread  && \
+    ./b2 --toolset=gcc --target-os=darwin threading=multi link=static install  && \
     cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
     make -j9 && \
     make install && \
