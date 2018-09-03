@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get -qq update \
     && apt-get -y install bison flex gawk git pkg-config python python3 cmake \
-                wget python3-dev libboost-all-dev
+                wget python3-dev libboost-all-dev gperf autoconf
 
 RUN mkdir /src && cd /src && wget https://github.com/libusb/libusb/releases/download/v1.0.22/libusb-1.0.22.tar.bz2 && \
     tar xvfj libusb-1.0.22.tar.bz2 && mv libusb-1.0.22 libusb && \
