@@ -33,7 +33,7 @@ COPY Toolchain.cmake ${CROSS_PREFIX}/
 ENV CMAKE_TOOLCHAIN_FILE ${CROSS_PREFIX}/Toolchain.cmake
 
 RUN cd /src/boost && \
-    echo "using gcc : : " /osxcross-master/target/bin/${CROSS_NAME}-g++ " : <linker-type>\"darwin\" <archiver>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ar\" <ranlib>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ranlib\" ; " >> tools/build/src/user-config.jam && \
+    echo "using gcc : : " /osxcross-master/target/bin/${CROSS_NAME}-g++ " : <cxxflags>\"-arch x86_64 -fvisibility=hidden -fvisibility-inlines-hidden -mmacosx-version-min=10.6\" <linker-type>\"darwin\" <archiver>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ar\" <ranlib>\"/osxcross-master/target/bin/x86_64-apple-darwin15-ranlib\" ; " >> tools/build/src/user-config.jam && \
     ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread  && \
     ./b2 --toolset=gcc --target-os=darwin threading=multi link=static install  && \
     cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
