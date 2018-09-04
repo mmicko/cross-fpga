@@ -4,7 +4,7 @@ ENV CROSS_NAME arm-linux-gnueabihf
 
 ENV CROSS_PREFIX /opt/${CROSS_NAME}
 
-RUN apt-get -y install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf binfmt-support qemu-user-static && \
+RUN apt-get -y install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf && \
     apt-get clean --yes
 
 ENV AS=/usr/bin/${CROSS_NAME}-as \
@@ -38,5 +38,3 @@ RUN cd /src/boost && \
     cp lsusb ${CROSS_PREFIX}/bin/. && \
     cd / && \
     rm -rf /src 
-
-ENV QEMU_LD_PREFIX=/usr/${CROSS_NAME}
