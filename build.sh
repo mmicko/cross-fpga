@@ -11,7 +11,8 @@ J=$(($(nproc)-1))
 BUILD_SYSTEM=0
 BUILD_YOSYS=0
 BUILD_ICE40=0
-BUILD_ECP5=1
+BUILD_ECP5=0
+BUILD_IVERILOG=1
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -69,32 +70,39 @@ echo ""
 echo ">>> ARCHITECTURE \"$ARCH\""
 CROSS_HOST=$WORK_DIR/docker/bin/cross-linux-x64
 if [ $ARCH == "linux_x86_64" ]; then
+  HOST="x86_64-linux-gnu"
   CROSS=$WORK_DIR/docker/bin/cross-linux-x64
   CROSS_PREFIX=/opt/x86_64-linux-gnu
 fi
 if [ $ARCH == "linux_i686" ]; then
+  HOST="x86_64-linux-gnu"
   CROSS=$WORK_DIR/docker/bin/cross-linux-x86
   CROSS_PREFIX=/opt/i686-linux-gnu
 fi
 if [ $ARCH == "linux_armv7l" ]; then
+  HOST="arm-linux-gnueabihf"
   CROSS=$WORK_DIR/docker/bin/cross-linux-arm
   CROSS_PREFIX=/opt/arm-linux-gnueabihf
 fi
 if [ $ARCH == "linux_aarch64" ]; then
+  HOST="aarch64-linux-gnu"
   CROSS=$WORK_DIR/docker/bin/cross-linux-arm64
   CROSS_PREFIX=/opt/aarch64-linux-gnu
 fi
 if [ $ARCH == "windows_x86" ]; then
   EXE=".exe"
+  HOST="i686-w64-mingw32"
   CROSS=$WORK_DIR/docker/bin/cross-windows-x86
   CROSS_PREFIX=/opt/i686-w64-mingw32
 fi
 if [ $ARCH == "windows_amd64" ]; then
+  HOST="x86_64-w64-mingw32"
   EXE=".exe"
   CROSS=$WORK_DIR/docker/bin/cross-windows-x64
   CROSS_PREFIX=/opt/x86_64-w64-mingw32
 fi
 if [ $ARCH == "darwin" ]; then
+  HOST="x86_64-apple-darwin15"
   CROSS=$WORK_DIR/docker/bin/cross-darwin-x64
   CROSS_PREFIX=/opt/x86_64-apple-darwin15
 fi
@@ -180,4 +188,20 @@ if [ $BUILD_ECP5 == "1" ]; then
 
   print ">> Create ecp5 package"
   . $WORK_DIR/scripts/create_package.sh
+fi
+
+# --------- Build iverilog ------------------------------------
+if [ $BUILD_IVERILOG == "1" ]; then
+  print ">> Compile iverilog"
+  # -- Toolchain iverilog
+  NAME=toolchain-iverilog
+  VERSION=$DATE_VERSION
+  # -- Create the package folders
+  mkdir -p $PACKAGE_DIR/$NAME/bin
+  mkdir -p $PACKAGE_DIR/$NAME/share
+
+  . $WORK_DIR/scripts/compile_iverilog.sh
+
+  #print ">> Create iverilog package"
+  #. $WORK_DIR/scripts/create_package.sh
 fi
