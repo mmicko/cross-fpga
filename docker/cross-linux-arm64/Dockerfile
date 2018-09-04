@@ -4,7 +4,7 @@ ENV CROSS_NAME aarch64-linux-gnu
 
 ENV CROSS_PREFIX /opt/${CROSS_NAME}
 
-RUN apt-get -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu && \
+RUN apt-get -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binfmt-support qemu-user-static && \
     apt-get clean --yes
 
 ENV AS=/usr/bin/${CROSS_NAME}-as \
@@ -38,3 +38,5 @@ RUN cd /src/boost && \
     cp lsusb ${CROSS_PREFIX}/bin/. && \
     cd / && \
     rm -rf /src 
+
+ENV QEMU_LD_PREFIX=/usr/${CROSS_NAME}
