@@ -44,4 +44,4 @@ test_bin vvp/vvp$EXE
 
 # -- Copy the executable to the bin dir
 cp driver/iverilog$EXE $PACKAGE_DIR/$NAME/bin/iverilog$EXE
-cp driver/vvp$EXE $PACKAGE_DIR/$NAME/bin/vvp$EXE
+cp vvp/vvp$EXE $PACKAGE_DIR/$NAME/bin/vvp$EXE
