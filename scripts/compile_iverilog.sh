@@ -22,37 +22,26 @@ sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" vvp/Makefile.in
 $CROSS /bin/sh autoconf.sh
 
 # -- Prepare for building
-$CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static-libgcc -static-libstdc++"
+$CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations"
 
 # -- Compile it
-$CROSS make -j$J
+$CROSS make -j$J dep config.h _pli_types.h version_tag.h version.exe 
 
 # -- Make binaries static
-if [ ${ARCH:0:5} == "linux" ]; then
-  SUBDIRS="driver vvp"
-  for SUBDIR in ${SUBDIRS[@]}
-  do
-    $CROSS make -C $SUBDIR clean
-    $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
-  done
+SUBDIRS="driver vvp"
+for SUBDIR in ${SUBDIRS[@]}
+do
+if [ $ARCH == "darwin" ]; then
+  $CROSS make -C $SUBDIR -j$J LDFLAGS="-Bstatic"
+else
+  $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
 fi
+done
 
 # -- Test the generated executables
 test_bin driver/iverilog$EXE
 test_bin vvp/vvp$EXE
 
-if [ $ARCH == "linux" ]; then
-  test_bin iverilog-vpi
-fi
-
-if [ $ARCH == "windows" ]; then
-  test_bin driver-vpi/iverilog-vpi$EXE
-fi
-
-#cd $BUILD_DIR
-
-#rm -rf BUILD_IVERILOG
-#mkdir -p BUILD_IVERILOG
-# -- Install the programs into the package folder
-#$CROSS make -C $IVERILOG install prefix=../BUILD_IVERILOG
-#mv BUILD_IVERILOG/* $PACKAGE_DIR/$NAME/.
+# -- Copy the executable to the bin dir
+cp driver/iverilog$EXE $PACKAGE_DIR/$NAME/bin/iverilog$EXE
+cp driver/vvp$EXE $PACKAGE_DIR/$NAME/bin/vvp$EXE

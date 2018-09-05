@@ -1,0 +1,7 @@
+{
+  "name":"toolchain-iverilog",
+  "description":"Icarus Verilog toolchain",
+  "url":"https://github.com/FPGAwars/toolchain-iverilog/releases",
+  "version": %VERSION%,
+  "system": [ %SYSTEM% ]
+}

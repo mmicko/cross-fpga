@@ -198,10 +198,9 @@ if [ $BUILD_IVERILOG == "1" ]; then
   VERSION=$DATE_VERSION
   # -- Create the package folders
   mkdir -p $PACKAGE_DIR/$NAME/bin
-  mkdir -p $PACKAGE_DIR/$NAME/share
 
   . $WORK_DIR/scripts/compile_iverilog.sh
 
-  #print ">> Create iverilog package"
-  #. $WORK_DIR/scripts/create_package.sh
+  print ">> Create iverilog package"
+  . $WORK_DIR/scripts/create_package.sh
 fi
