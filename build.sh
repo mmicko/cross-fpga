@@ -12,7 +12,8 @@ BUILD_SYSTEM=0
 BUILD_YOSYS=0
 BUILD_ICE40=0
 BUILD_ECP5=0
-BUILD_IVERILOG=1
+BUILD_IVERILOG=0
+BUILD_VERILATOR=1
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -202,5 +203,20 @@ if [ $BUILD_IVERILOG == "1" ]; then
   . $WORK_DIR/scripts/compile_iverilog.sh
 
   print ">> Create iverilog package"
+  . $WORK_DIR/scripts/create_package.sh
+fi
+
+# --------- Build verilator ------------------------------------
+if [ $BUILD_VERILATOR == "1" ]; then
+  print ">> Compile verilator"
+  # -- Toolchain verilator
+  NAME=toolchain-verilator
+  VERSION=$DATE_VERSION
+  # -- Create the package folders
+  mkdir -p $PACKAGE_DIR/$NAME/bin
+
+  . $WORK_DIR/scripts/compile_verilator.sh
+
+  print ">> Create verilator package"
   . $WORK_DIR/scripts/create_package.sh
 fi
