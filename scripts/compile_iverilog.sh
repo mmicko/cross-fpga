@@ -21,27 +21,41 @@ sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" Makefile.in
 sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" vvp/Makefile.in
 $CROSS /bin/sh autoconf.sh
 
+# -- Force not to use libreadline and libhistory
+if [ ${ARCH:0:5} == "linux" ]; then
+  sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" configure
+  sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
+  sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
+fi
+
 # -- Prepare for building
-$CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations"
+$CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static-libgcc -static-libstdc++"
 
 # -- Compile it
-$CROSS make -j$J dep config.h _pli_types.h version_tag.h version.exe 
+$CROSS make -j$J
 
 # -- Make binaries static
-SUBDIRS="driver vvp"
+SUBDIRS="driver"
 for SUBDIR in ${SUBDIRS[@]}
 do
-if [ $ARCH == "darwin" ]; then
-  $CROSS make -C $SUBDIR -j$J LDFLAGS="-Bstatic"
-else
-  $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
-fi
+  $CROSS make -C $SUBDIR clean
+  if [ $ARCH == "darwin" ]; then
+    $CROSS make -C $SUBDIR -j$J LDFLAGS="-Bstatic"
+  else
+    $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
+  fi
 done
 
 # -- Test the generated executables
 test_bin driver/iverilog$EXE
-test_bin vvp/vvp$EXE
 
-# -- Copy the executable to the bin dir
-cp driver/iverilog$EXE $PACKAGE_DIR/$NAME/bin/iverilog$EXE
-cp vvp/vvp$EXE $PACKAGE_DIR/$NAME/bin/vvp$EXE
+if [ $ARCH == "windows" ]; then
+  test_bin driver-vpi/iverilog-vpi$EXE
+fi
+
+cd $BUILD_DIR/$IVERILOG
+rm -rf BUILD_IVERILOG
+mkdir -p BUILD_IVERILOG
+# -- Install the programs into the package folder
+$CROSS make install prefix=/work/BUILD_IVERILOG
+mv BUILD_IVERILOG/* $PACKAGE_DIR/$NAME/.
