@@ -22,29 +22,33 @@ sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" vvp/Makefile.in
 $CROSS /bin/sh autoconf.sh
 
 # -- Force not to use libreadline and libhistory
-if [ ${ARCH:0:5} == "linux" ]; then
-  sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" configure
-  sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
-  sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
-fi
+sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" configure
+sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
+sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
 
 # -- Prepare for building
-$CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static-libgcc -static-libstdc++"
+if [ $ARCH == "windows_x86" ] || [ $ARCH == "windows_amd64" ]; then
+  $CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static"
+else
+  $CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static-libgcc -static-libstdc++"
+fi
 
 # -- Compile it
 $CROSS make -j$J
 
 # -- Make binaries static
-SUBDIRS="driver"
-for SUBDIR in ${SUBDIRS[@]}
-do
-  $CROSS make -C $SUBDIR clean
-  if [ $ARCH == "darwin" ]; then
-    $CROSS make -C $SUBDIR -j$J LDFLAGS="-Bstatic"
-  else
-    $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
-  fi
-done
+if [ ${ARCH:0:5} == "linux" ] || [ $ARCH == "darwin" ]; then
+  SUBDIRS="driver"
+  for SUBDIR in ${SUBDIRS[@]}
+  do
+    $CROSS make -C $SUBDIR clean
+    if [ $ARCH == "darwin" ]; then
+      $CROSS make -C $SUBDIR -j$J LDFLAGS="-Bstatic"
+    else
+      $CROSS make -C $SUBDIR -j$J LDFLAGS="-static"
+    fi
+  done
+fi
 
 # -- Test the generated executables
 test_bin driver/iverilog$EXE
@@ -59,3 +63,11 @@ mkdir -p BUILD_IVERILOG
 # -- Install the programs into the package folder
 $CROSS make install prefix=/work/BUILD_IVERILOG
 mv BUILD_IVERILOG/* $PACKAGE_DIR/$NAME/.
+
+if [ $ARCH == "windows_amd64" ]; then
+  cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll $PACKAGE_DIR/$NAME/bin/.
+fi
+
+if [ $ARCH == "windows_x86" ]; then
+  cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll  $PACKAGE_DIR/$NAME/bin/.
+fi

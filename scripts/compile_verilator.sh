@@ -7,7 +7,8 @@ cd $UPSTREAM_DIR
 
 # -- Clone the sources from github
 test -e $VERILATOR || git clone $GIT_VERILATOR $VERILATOR
-git -C $VERILATOR pull
+#git -C $VERILATOR pull
+git -C $VERILATOR checkout v3.926
 echo ""
 git -C $VERILATOR log -1
 
