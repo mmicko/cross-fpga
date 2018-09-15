@@ -27,7 +27,7 @@ sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" 
 sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
 
 if [ $ARCH == "darwin" ]; then
-  sed -i "s/find_ivl_root_failed(\"couldn/\/\/find_ivl_root_failed(\"couldn/g" driver/main.c 
+  sed -i "s/find_ivl_root();/\/\/find_ivl_root();/g" driver/main.c 
 fi
 
 # -- Prepare for building
