@@ -26,6 +26,10 @@ sed -i "s/ac_cv_lib_readline_readline=yes/ac_cv_lib_readline_readline=no/g" conf
 sed -i "s/ac_cv_lib_history_add_history=yes/ac_cv_lib_history_add_history=no/g" configure
 sed -i "s/ac_cv_lib_pthread_pthread_create=yes/ac_cv_lib_pthread_pthread_create=no/g" configure
 
+if [ $ARCH == "darwin" ]; then
+  sed -i "s/find_ivl_root_failed(\"couldn/\/\/find_ivl_root_failed(\"couldn/g" driver/main.c 
+fi
+
 # -- Prepare for building
 if [ $ARCH == "windows_x86" ] || [ $ARCH == "windows_amd64" ]; then
   $CROSS ./configure --build=x86_64-unknown-linux-gnu HOSTCC=gcc --host=$HOST CFLAGS="-O2" CXXFLAGS="-O2 -Wno-deprecated-declarations" LDFLAGS="-static"
