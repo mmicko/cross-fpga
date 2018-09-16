@@ -67,11 +67,3 @@ mkdir -p BUILD_IVERILOG
 # -- Install the programs into the package folder
 $CROSS make install prefix=/work/BUILD_IVERILOG
 mv BUILD_IVERILOG/* $PACKAGE_DIR/$NAME/.
-
-if [ $ARCH == "windows_amd64" ]; then
-  cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll $PACKAGE_DIR/$NAME/bin/.
-fi
-
-if [ $ARCH == "windows_x86" ]; then
-  cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll  $PACKAGE_DIR/$NAME/bin/.
-fi
