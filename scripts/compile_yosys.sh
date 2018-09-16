@@ -22,7 +22,8 @@ if [ $ARCH == "darwin" ]; then
 fi
 
 if [ $ARCH == "windows_x86" ] || [ $ARCH == "windows_amd64" ]; then
-  $CROSS make NO_FPIC=1 ARCHFLAGS="-DWIN32_NO_DLL -DHAVE_STRUCT_TIMESPEC -fpermissive -w -UABC_USE_STDINT_H -DPTW32_STATIC_LIB" -j$J
+  sed -i "s/CXXFLAGS += -std=c++11 -Os/CXXFLAGS += -std=c++11 -Os -DYOSYS_WIN32_UNIX_DIR /g" Makefile
+  $CROSS make ARCHFLAGS="-DWIN32_NO_DLL -DHAVE_STRUCT_TIMESPEC -fpermissive -w -UABC_USE_STDINT_H -DPTW32_STATIC_LIB" -j$J
 else
   $CROSS make -j$J
 fi
