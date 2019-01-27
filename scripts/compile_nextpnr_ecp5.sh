@@ -18,8 +18,6 @@ cd $BUILD_DIR/
 
 $CROSS_HOST /bin/sh -c 'rm -rf BUILD_BBA && mkdir BUILD_BBA && cd BUILD_BBA && cmake ../nextpnr -DARCH=generic -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DBOOST_ROOT=$CROSS_PREFIX && make bbasm'
 
-cd $BUILD_DIR/prjtrellis
-./download-latest-db.sh
 cd $BUILD_DIR
 
 rm -rf BUILD_ECP5

@@ -6,7 +6,7 @@ GIT_PRJTRELLIS=https://github.com/SymbiFlow/prjtrellis
 cd $UPSTREAM_DIR
 
 # -- Clone the sources from github
-test -e $PRJTRELLIS || git clone --depth=1 $GIT_PRJTRELLIS $PRJTRELLIS
+test -e $PRJTRELLIS || git clone --recursive --depth=1 $GIT_PRJTRELLIS $PRJTRELLIS
 git -C $PRJTRELLIS pull
 echo ""
 git -C $PRJTRELLIS log -1
@@ -15,8 +15,6 @@ git -C $PRJTRELLIS log -1
 rm -rf $BUILD_DIR/$PRJTRELLIS
 rsync -a $PRJTRELLIS $BUILD_DIR --exclude .git
 
-cd $BUILD_DIR/$PRJTRELLIS
-./download-latest-db.sh
 cd $BUILD_DIR
 
 $CROSS_HOST /bin/sh -c 'rm -rf BUILD_PY && mkdir BUILD_PY && cd BUILD_PY && cmake ../prjtrellis/libtrellis'
@@ -32,10 +30,12 @@ cp BUILD_PY/pytrellis.so $PRJTRELLIS/libtrellis/.
 # -- Test the generated executables
 test_bin $PRJTRELLIS/libtrellis/ecppack$EXE
 test_bin $PRJTRELLIS/libtrellis/ecpunpack$EXE
+test_bin $PRJTRELLIS/libtrellis/ecppll$EXE
 
 # -- Copy the executable to the bin dir
 cp $PRJTRELLIS/libtrellis/ecppack$EXE $PACKAGE_DIR/$NAME/bin/ecppack$EXE
 cp $PRJTRELLIS/libtrellis/ecpunpack$EXE $PACKAGE_DIR/$NAME/bin/ecpunpack$EXE
+cp $PRJTRELLIS/libtrellis/ecppll$EXE $PACKAGE_DIR/$NAME/bin/ecppll$EXE
 cp $PRJTRELLIS/tools/bit_to_svf.py $PACKAGE_DIR/$NAME/bin/bit_to_svf.py
 
 # -- Copy the chipdb*.bin data files
