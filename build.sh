@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATE_VERSION=2018.11.0
+DATE_VERSION=2019.2.0
 
 # -- Target architectures
 ARCH=$1
@@ -12,8 +12,8 @@ BUILD_SYSTEM=0
 BUILD_YOSYS=1
 BUILD_ICE40=1
 BUILD_ECP5=1
-BUILD_IVERILOG=0
-BUILD_VERILATOR=0
+BUILD_IVERILOG=1
+BUILD_VERILATOR=1
 
 # -- Store current dir
 WORK_DIR=$PWD
@@ -187,6 +187,8 @@ if [ $BUILD_ECP5 == "1" ]; then
   . $WORK_DIR/scripts/compile_prjtrellis.sh
 
   . $WORK_DIR/scripts/compile_nextpnr_ecp5.sh
+
+  . $WORK_DIR/scripts/compile_ujprog.sh
 
   print ">> Create ecp5 package"
   . $WORK_DIR/scripts/create_package.sh
