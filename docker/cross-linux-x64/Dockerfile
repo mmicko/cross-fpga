@@ -16,7 +16,7 @@ COPY Toolchain.cmake ${CROSS_PREFIX}/
 ENV CMAKE_TOOLCHAIN_FILE ${CROSS_PREFIX}/Toolchain.cmake
 
 RUN cd /src/boost && \
-    ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread && \
+    ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread,iostreams && \
     ./b2 link=static install && \
     cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
     make -j9 && \
