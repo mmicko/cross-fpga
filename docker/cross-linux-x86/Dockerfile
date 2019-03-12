@@ -45,3 +45,13 @@ RUN cd /src/boost && \
     cp lsusb ${CROSS_PREFIX}/bin/. && \
     cd / && \
     rm -rf /src 
+RUN mkdir /src && \
+    cd /src && \
+    wget -c https://mirrors.mediatemple.net/debian-archive/debian/pool/main/libu/libusb/libusb_0.1.12.orig.tar.gz && \
+    wget -c http://ftp.ubuntu.com/ubuntu/pool/universe/libf/libftdi/libftdi_0.20.orig.tar.gz && \
+    tar xvfz libusb_0.1.12.orig.tar.gz && \
+    tar xvfz libftdi_0.20.orig.tar.gz && \
+    cd /src/libusb-0.1.12 && CFLAGS=-Wno-format-truncation ./configure  --prefix=${CROSS_PREFIX} --host=x86_64-linux-gnu --enable-udev=no && make install  && \
+    cd /src/libftdi-0.20 && export PATH=${CROSS_PREFIX}/bin:$PATH && CFLAGS=-Wno-format-truncation CXXFLAGS="-I${CROSS_PREFIX}/include -L${CROSS_PREFIX}/lib" ./configure --prefix=${CROSS_PREFIX} --host=x86_64-linux-gnu &&  make install && \
+    cd / && \
+    rm -rf /src 

@@ -27,18 +27,16 @@ wget -c https://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.28%20WHQL%20Certified.z
 unzip ftdi.zip i386/ftd2xx.lib 
 fi
 
-
-sed -i "s/#ifdef __linux__/#ifdef __linux_bad__/g" ujprog.c
 sed -i "s/#include <ftd2xx.h>/#include \"ftd2xx.h\"/g" ujprog.c
 
 if [ $ARCH == "darwin" ]; then
-    $CROSS /bin/sh -c '${CC} -Wall -o ujprog ujprog.c -I${CROSS_PREFIX}/include/libftdi1 -Bstatic /opt/x86_64-apple-darwin15/lib/libftdi1.a /opt/x86_64-apple-darwin15/lib/libusb-1.0.a -Wl,-framework,IOKit -Wl,-framework,CoreFoundation -lobjc -lpthread'
+    $CROSS /bin/sh -c '${CC} -Wall -o ujprog ujprog.c -I${CROSS_PREFIX}/include -Bstatic /opt/x86_64-apple-darwin15/lib/libftdi.a /opt/x86_64-apple-darwin15/lib/libusb.a -Wl,-framework,IOKit -Wl,-framework,CoreFoundation -lobjc -lpthread'
 elif [ $ARCH == "windows_amd64" ]; then
     $CROSS /bin/sh -c '${CC} -o ujprog.exe ujprog.c -s -static -L. -lamd64/ftd2xx'
 elif [ $ARCH == "windows_x86" ]; then
     $CROSS /bin/sh -c '${CC} -o ujprog.exe ujprog.c -s -static -L. -li386/ftd2xx'
 else
-    $CROSS /bin/sh -c '${CC} -Wall -o ujprog ujprog.c -static -lftdi1 -lusb-1.0 -lpthread -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include/libftdi1'
+    $CROSS /bin/sh -c '${CC} -Wall -o ujprog ujprog.c -static -lftdi -lusb -lpthread -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include'
 fi
 
 # -- Test the generated executables

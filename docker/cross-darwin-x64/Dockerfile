@@ -53,6 +53,17 @@ RUN cd /src/boost && \
     cd / && \
     rm -rf /src 
 
+RUN mkdir /src && \
+    cd /src && \
+    wget -c https://mirrors.mediatemple.net/debian-archive/debian/pool/main/libu/libusb/libusb_0.1.12.orig.tar.gz && \
+    wget -c http://ftp.ubuntu.com/ubuntu/pool/universe/libf/libftdi/libftdi_0.20.orig.tar.gz && \
+    tar xvfz libusb_0.1.12.orig.tar.gz && \
+    tar xvfz libftdi_0.20.orig.tar.gz && \
+    cd /src/libusb-0.1.12 && ./configure  --prefix=${CROSS_PREFIX} --host=x86_64-linux-gnu --enable-udev=no && make install  && \
+    cd /src/libftdi-0.20 && export PATH=${CROSS_PREFIX}/bin:$PATH && CXXFLAGS="-I${CROSS_PREFIX}/include -L${CROSS_PREFIX}/lib" ./configure --prefix=${CROSS_PREFIX} --host=x86_64-linux-gnu &&  make install && \
+    cd / && \
+    rm -rf /src 
+
 ENV CC=/osxcross-master/target/bin/${CROSS_NAME}-gcc \
     CXX=/osxcross-master/target/bin/${CROSS_NAME}-g++ \
     OSXCROSS_NO_INCLUDE_PATH_WARNINGS=1

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATE_VERSION=2019.2.2
+DATE_VERSION=2019.2.3
 
 # -- Target architectures
 ARCH=$1
@@ -9,8 +9,8 @@ J=$(($(nproc)-1))
 
 # -- Debug flags
 BUILD_SYSTEM=0
-BUILD_YOSYS=1
-BUILD_ICE40=1
+BUILD_YOSYS=0
+BUILD_ICE40=0
 BUILD_ECP5=1
 BUILD_IVERILOG=0
 BUILD_VERILATOR=0
