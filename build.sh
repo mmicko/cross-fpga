@@ -10,8 +10,8 @@ J=$(($(nproc)-1))
 # -- Debug flags
 BUILD_SYSTEM=0
 BUILD_YOSYS=0
-BUILD_ICE40=0
-BUILD_ECP5=1
+BUILD_ICE40=1
+BUILD_ECP5=0
 BUILD_IVERILOG=0
 BUILD_VERILATOR=0
 
@@ -165,8 +165,6 @@ if [ $BUILD_ICE40 == "1" ]; then
   mkdir -p $PACKAGE_DIR/$NAME/share
 
   . $WORK_DIR/scripts/compile_icestorm.sh
-
-  . $WORK_DIR/scripts/compile_arachnepnr.sh
 
   . $WORK_DIR/scripts/compile_nextpnr_ice40.sh
 
