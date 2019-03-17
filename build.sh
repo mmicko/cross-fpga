@@ -4,13 +4,13 @@ DATE_VERSION=2019.2.3
 
 # -- Target architectures
 ARCH=$1
-TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 windows_amd64 darwin"
+TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 windows_amd64 darwin linux_riscv32 linux_riscv64"
 J=$(($(nproc)-1))
 
 # -- Debug flags
-BUILD_SYSTEM=0
-BUILD_YOSYS=0
-BUILD_ICE40=1
+BUILD_SYSTEM=1
+BUILD_YOSYS=1
+BUILD_ICE40=0
 BUILD_ECP5=0
 BUILD_IVERILOG=0
 BUILD_VERILATOR=0
@@ -106,6 +106,16 @@ if [ $ARCH == "darwin" ]; then
   HOST="x86_64-apple-darwin15"
   CROSS=$WORK_DIR/docker/bin/cross-darwin-x64
   CROSS_PREFIX=/opt/x86_64-apple-darwin15
+fi
+if [ $ARCH == "linux_riscv64" ]; then
+  HOST="riscv64-linux-gnu"
+  CROSS=$WORK_DIR/docker/bin/cross-linux-riscv64
+  CROSS_PREFIX=/opt/riscv64-linux-gnu
+fi
+if [ $ARCH == "linux_riscv32" ]; then
+  HOST="riscv64-unknown-linux-gnu"
+  CROSS=$WORK_DIR/docker/bin/cross-linux-riscv32
+  CROSS_PREFIX=/opt/riscv32-unknown-linux-gnu
 fi
 
 # -- Directory for compiling the tools
