@@ -190,6 +190,8 @@ if [ $BUILD_ECP5 == "1" ]; then
 
   . $WORK_DIR/scripts/compile_ujprog.sh
 
+  . $WORK_DIR/scripts/compile_libxsvf.sh
+
   print ">> Create ecp5 package"
   . $WORK_DIR/scripts/create_package.sh
 fi
