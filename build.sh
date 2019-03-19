@@ -4,7 +4,7 @@ DATE_VERSION=2019.2.3
 
 # -- Target architectures
 ARCH=$1
-TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 windows_amd64 darwin linux_riscv32 linux_riscv64 linux_or1k"
+TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 windows_amd64 darwin linux_riscv32 linux_riscv64 linux_or1k linux_mipsel linux_mips64"
 J=$(($(nproc)-1))
 
 # -- Debug flags
@@ -121,6 +121,16 @@ if [ $ARCH == "linux_or1k" ]; then
   HOST="or1k-musl-linux"
   CROSS=$WORK_DIR/docker/bin/cross-linux-or1k
   CROSS_PREFIX=/opt/or1k-musl-linux
+fi
+if [ $ARCH == "linux_mipsel" ]; then
+  HOST="mipsel-linux-gnu"
+  CROSS=$WORK_DIR/docker/bin/cross-linux-mipsel
+  CROSS_PREFIX=/opt/mipsel-linux-gnu
+fi
+if [ $ARCH == "linux_mips64" ]; then
+  HOST="mips64-linux-gnuabi64"
+  CROSS=$WORK_DIR/docker/bin/cross-linux-mips64
+  CROSS_PREFIX=/opt/mips64-linux-gnuabi64
 fi
 
 # -- Directory for compiling the tools
