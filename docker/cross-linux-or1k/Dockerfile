@@ -19,9 +19,10 @@ ENV CMAKE_TOOLCHAIN_FILE ${CROSS_PREFIX}/Toolchain.cmake
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4 && \
     cd /src/boost && \
+    sed -i "s/__ARMEB__/__OR1K__/g" boost/predef/other/endian.h && \
     echo "using gcc : or1k : " ${CC} "; " >> tools/build/src/user-config.jam && \
     ./bootstrap.sh --prefix=${CROSS_PREFIX} --with-libraries=program_options,filesystem,thread,iostreams && \
-    ./b2 --toolset=gcc-or1k link=static install cxxflags=-DBOOST_LITTLE_ENDIAN && \
+    ./b2 --toolset=gcc-or1k link=static install && \
     cd /src/libusb &&  ./configure --prefix=${CROSS_PREFIX} --host=${CROSS_NAME} --enable-udev=no && \
     make -j9 && \
     make install && \
