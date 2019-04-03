@@ -1,10 +1,10 @@
 FROM mmicko/cross-base:1.0
 
-ENV CROSS_NAME or1k-musl-linux
+ENV CROSS_NAME or1k-linux-musl
 
 ENV CROSS_PREFIX /opt/${CROSS_NAME}
 
-RUN cd / && wget https://github.com/openrisc/or1k-gcc/releases/download/or1k-7.2.0-20180317/or1k-linux-musl-7.2.0-20180317.tar.gz && tar xvfz or1k-linux-musl-7.2.0-20180317.tar.gz && rm or1k-linux-musl-7.2.0-20180317.tar.gz
+RUN cd / && wget https://github.com/stffrdhrn/gcc/releases/download/or1k-9.0.1-20190402/or1k-linux-musl-9.0.1-20190402.tar.xz && tar xvfJ or1k-linux-musl-9.0.1-20190402.tar.xz && rm or1k-linux-musl-9.0.1-20190402.tar.xz
 
 ENV AS=/or1k-linux-musl/bin/${CROSS_NAME}-as \
     AR=/or1k-linux-musl/bin/${CROSS_NAME}-ar \
