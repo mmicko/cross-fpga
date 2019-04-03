@@ -118,9 +118,9 @@ if [ $ARCH == "linux_riscv32" ]; then
   CROSS_PREFIX=/opt/riscv32-unknown-linux-gnu
 fi
 if [ $ARCH == "linux_or1k" ]; then
-  HOST="or1k-musl-linux"
+  HOST="or1k-linux-musl"
   CROSS=$WORK_DIR/docker/bin/cross-linux-or1k
-  CROSS_PREFIX=/opt/or1k-musl-linux
+  CROSS_PREFIX=/opt/or1k-linux-musl
 fi
 if [ $ARCH == "linux_mipsel" ]; then
   HOST="mipsel-linux-gnu"
