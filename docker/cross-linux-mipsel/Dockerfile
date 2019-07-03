@@ -48,4 +48,11 @@ RUN mkdir /src && \
     cd /src/libftdi-0.20 && export PATH=${CROSS_PREFIX}/bin:$PATH && CFLAGS=-Wno-format-truncation CXXFLAGS="-I${CROSS_PREFIX}/include -L${CROSS_PREFIX}/lib" ./configure --prefix=${CROSS_PREFIX} --host=x86_64-linux-gnu &&  make install && \
     cd / && \
     rm -rf /src 
+RUN mkdir /src && \
+    cd /src && \
+    wget -c http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz && \
+    tar xvfz 3.3.7.tar.gz && \
+    cd /src/eigen-eigen-323c052e1731 && mkdir build && cd build && cmake .. && make install && \
+    cd / && \
+    rm -rf /src 
 

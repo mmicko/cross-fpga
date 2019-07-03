@@ -43,3 +43,11 @@ RUN cp ${CROSS_PREFIX}/lib/libboost_thread_win32.a ${CROSS_PREFIX}/lib/libboost_
 
 RUN echo "1"| update-alternatives --config x86_64-w64-mingw32-gcc
 RUN echo "1"| update-alternatives --config x86_64-w64-mingw32-g++
+
+RUN mkdir /src && \
+    cd /src && \
+    wget -c http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz && \
+    tar xvfz 3.3.7.tar.gz && \
+    cd /src/eigen-eigen-323c052e1731 && mkdir build && cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake  && make install && \
+    cd / && \
+    rm -rf /src 

@@ -64,6 +64,14 @@ RUN mkdir /src && \
     cd / && \
     rm -rf /src 
 
+RUN mkdir /src && \
+    cd /src && \
+    wget -c http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz && \
+    tar xvfz 3.3.7.tar.gz && \
+    cd /src/eigen-eigen-323c052e1731 && mkdir build && cd build && cmake .. && make install && \
+    cd / && \
+    rm -rf /src 
+
 ENV CC=/osxcross-master/target/bin/${CROSS_NAME}-gcc \
     CXX=/osxcross-master/target/bin/${CROSS_NAME}-g++ \
     OSXCROSS_NO_INCLUDE_PATH_WARNINGS=1
