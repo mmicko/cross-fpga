@@ -19,6 +19,7 @@ cd $BUILD_DIR/$IVERILOG
 # -- Generate the new configure
 sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" Makefile.in
 sed -i "s/HOSTCC = @CC@/HOSTCC = gcc/g" vvp/Makefile.in
+sed -i "s/\$(CC) \$(CFLAGS) -o draw_tt/gcc \$(CFLAGS) -o draw_tt/g" vvp/Makefile.in
 $CROSS /bin/sh autoconf.sh
 
 # -- Force not to use libreadline and libhistory
