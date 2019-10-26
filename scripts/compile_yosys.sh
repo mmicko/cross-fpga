@@ -17,6 +17,7 @@ cd $BUILD_DIR/$YOSYS
 
 $CROSS make config-gcc-static
 echo ENABLE_NDEBUG := 1 >> Makefile.conf 
+echo ENABLE_ZLIB := 0 >> Makefile.conf 
 
 if [ $ARCH == "darwin" ]; then
   sed -i "s/ -static/ -Bstatic/;" Makefile
