@@ -1,13 +1,13 @@
 # -- Compile Verilator script
 
 VERILATOR=verilator
-GIT_VERILATOR=http://git.veripool.org/git/verilator
+GIT_VERILATOR=https://github.com/verilator/verilator
 
 cd $UPSTREAM_DIR
 
 # -- Clone the sources from github
 test -e $VERILATOR || git clone $GIT_VERILATOR $VERILATOR
-git -C $VERILATOR pull
+git -C $VERILATOR checkout tags/verilator_4_020
 echo ""
 git -C $VERILATOR log -1
 

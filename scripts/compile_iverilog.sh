@@ -6,8 +6,8 @@ GIT_IVERILOG=https://github.com/steveicarus/iverilog
 cd $UPSTREAM_DIR
 
 # -- Clone the sources from github
-test -e $IVERILOG || git clone --depth=1 $GIT_IVERILOG $IVERILOG
-git -C $IVERILOG pull
+test -e $IVERILOG || git clone $GIT_IVERILOG $IVERILOG
+git -C $IVERILOG checkout tags/v10_3
 echo ""
 git -C $IVERILOG log -1
 

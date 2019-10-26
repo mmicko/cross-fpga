@@ -1,6 +1,9 @@
 #!/bin/bash
 
 DATE_VERSION=2019.10.1
+YOSYS_VERSION=0.9.201910
+IVERILOG_VERSION=10.3.0
+VERILATOR_VERSION=4.20.0
 
 # -- Target architectures
 ARCH=$1
@@ -168,7 +171,7 @@ if [ $BUILD_YOSYS == "1" ]; then
   print ">> Compile yosys"
   # -- Toolchain name
   NAME=toolchain-yosys
-  VERSION=$DATE_VERSION
+  VERSION=$YOSYS_VERSION
   # -- Create the package folders
   mkdir -p $PACKAGE_DIR/$NAME/bin
   mkdir -p $PACKAGE_DIR/$NAME/share
@@ -224,7 +227,7 @@ if [ $BUILD_IVERILOG == "1" ]; then
   print ">> Compile iverilog"
   # -- Toolchain iverilog
   NAME=toolchain-iverilog
-  VERSION=$DATE_VERSION
+  VERSION=$IVERILOG_VERSION
   # -- Create the package folders
   mkdir -p $PACKAGE_DIR/$NAME/bin
 
@@ -239,7 +242,7 @@ if [ $BUILD_VERILATOR == "1" ]; then
   print ">> Compile verilator"
   # -- Toolchain verilator
   NAME=toolchain-verilator
-  VERSION=$DATE_VERSION
+  VERSION=$VERILATOR_VERSION
   # -- Create the package folders
   mkdir -p $PACKAGE_DIR/$NAME/bin
 
