@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATE_VERSION=2019.2.3
+DATE_VERSION=2019.10.1
 
 # -- Target architectures
 ARCH=$1
@@ -8,12 +8,12 @@ TARGET_ARCHS="linux_x86_64 linux_i686 linux_armv7l linux_aarch64 windows_x86 win
 J=$(($(nproc)-1))
 
 # -- Debug flags
-BUILD_SYSTEM=1
+BUILD_SYSTEM=0
 BUILD_YOSYS=1
-BUILD_ICE40=0
-BUILD_ECP5=0
-BUILD_IVERILOG=0
-BUILD_VERILATOR=0
+BUILD_ICE40=1
+BUILD_ECP5=1
+BUILD_IVERILOG=1
+BUILD_VERILATOR=1
 
 # -- Store current dir
 WORK_DIR=$PWD
