@@ -13,13 +13,14 @@ git -C $PRJTRELLIS log -1
 
 # -- Copy the upstream sources into the build directory
 rm -rf $BUILD_DIR/$PRJTRELLIS
-rsync -a $PRJTRELLIS $BUILD_DIR --exclude .git
+rsync -a $PRJTRELLIS $BUILD_DIR #--exclude .git
 
 cd $BUILD_DIR
 
 $CROSS_HOST /bin/sh -c 'rm -rf BUILD_PY && mkdir BUILD_PY && cd BUILD_PY && cmake ../prjtrellis/libtrellis'
 $CROSS_HOST make -C BUILD_PY pytrellis -j$J
 
+$CROSS /bin/sh -c 'cd prjtrellis/libtrellis && cmake . -DBUILD_PYTHON=OFF -DBUILD_SHARED=OFF -DSTATIC_BUILD=ON -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX'
 $CROSS /bin/sh -c 'cd prjtrellis/libtrellis && cmake . -DBUILD_PYTHON=OFF -DBUILD_SHARED=OFF -DSTATIC_BUILD=ON -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX'
 
 $CROSS make -C $PRJTRELLIS/libtrellis -j$J
