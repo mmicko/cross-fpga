@@ -27,7 +27,7 @@ function test2 {
 }
 
 function test3 {
-    output=$(ldd $1 | grep "not a dynamic executable")
+    output=$(ldd $1 2>&1 | grep "not a dynamic executable")
     test0 "- 3. File is static" test -n "$output"
 }
 

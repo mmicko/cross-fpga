@@ -23,7 +23,7 @@ cd $BUILD_DIR
 rm -rf BUILD_ECP5
 mkdir -p BUILD_ECP5
 
-$CROSS /bin/sh -c 'cd BUILD_ECP5 && cmake ../nextpnr -DARCH=ecp5 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DTRELLIS_ROOT=/work/prjtrellis -DIMPORT_EXECUTABLES=../BUILD_BBA/ImportExecutables.cmake'
+$CROSS /bin/sh -c 'cd BUILD_ECP5 && cmake ../nextpnr -DARCH=ecp5 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DTRELLIS_LIBDIR=/work/prjtrellis/libtrellis -DTRELLIS_DATADIR=/work/prjtrellis -DBBA_IMPORT=../BUILD_BBA/bba-export.cmake'
 
 $CROSS make -C BUILD_ECP5 -j$J
 

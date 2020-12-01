@@ -1,7 +1,7 @@
 # -- Compile Icestorm script
 
 ICESTORM=icestorm
-GIT_ICESTORM=https://github.com/cliffordwolf/icestorm.git
+GIT_ICESTORM=https://github.com/YosysHQ/icestorm.git
 
 cd $UPSTREAM_DIR
 

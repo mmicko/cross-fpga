@@ -24,7 +24,7 @@ mkdir -p BUILD_ICE40/icebox
 cp -r icestorm/icebox/chipdb*.txt BUILD_ICE40/icebox
 cp -r icestorm/icefuzz/timings_*.txt BUILD_ICE40/icebox
 
-$CROSS /bin/sh -c 'cd BUILD_ICE40 && cmake ../nextpnr -DARCH=ice40 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DICEBOX_ROOT=/work/BUILD_ICE40/icebox -DIMPORT_EXECUTABLES=../BUILD_BBA/ImportExecutables.cmake'
+$CROSS /bin/sh -c 'cd BUILD_ICE40 && cmake ../nextpnr -DARCH=ice40 -DSTATIC_BUILD=ON -DBUILD_PYTHON=OFF -DBUILD_GUI=OFF -DCMAKE_TOOLCHAIN_FILE=$CROSS_PREFIX/Toolchain.cmake -DBOOST_ROOT=$CROSS_PREFIX -DICEBOX_DATADIR=/work/BUILD_ICE40/icebox -DBBA_IMPORT=../BUILD_BBA/bba-export.cmake'
 
 $CROSS make -C BUILD_ICE40 -j$J
 
