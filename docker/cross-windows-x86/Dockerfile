@@ -46,8 +46,8 @@ RUN echo "1"| update-alternatives --config i686-w64-mingw32-g++
 
 RUN mkdir /src && \
     cd /src && \
-    wget -c http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz && \
-    tar xvfz 3.3.7.tar.gz && \
-    cd /src/eigen-eigen-323c052e1731 && mkdir build && cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake  && make install && \
+    wget -c https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz && \
+    tar xvfz eigen-3.3.7.tar.gz && \
+    cd /src/eigen-3.3.7 && mkdir build && cd build && cmake .. -DCMAKE_TOOLCHAIN_FILE=${CROSS_PREFIX}/Toolchain.cmake  && make install && \
     cd / && \
     rm -rf /src 
